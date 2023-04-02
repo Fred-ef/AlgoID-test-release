@@ -1,0 +1,8 @@
+
+usage:  algodid create <DID name>
+
+    Generates a new AlgoDID identity and stores it in a secure wallet
+    Examples:
+
+    > algodid create my_did
+    

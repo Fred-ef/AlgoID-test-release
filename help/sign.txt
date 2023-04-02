@@ -1,0 +1,8 @@
+
+usage:  algodid sign <AlgoDID Identifier> <Data>
+
+    Signs the data provided with the AlgoDID identity's private key
+    Examples:
+
+    > algodid sign my_did "data to sign"
+    

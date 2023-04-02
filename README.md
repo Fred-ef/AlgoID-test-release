@@ -1,2 +1,2 @@
-# AlgoID-test-release
-(DEVELOPMENT DESCRIPTION) Test release for the AlgoID SSI Framework
+# AlgoID
+(TEMPORARY DEVELOPEMENT DESCRIPTION): DID method for the Algorand Blockchain based on W3C DID-specification and Algoand's TEAL Stateful Contracts

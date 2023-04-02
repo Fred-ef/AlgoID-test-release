@@ -1,0 +1,704 @@
+#pragma version 5
+txn ApplicationID
+int 0
+==
+bnz main_l34
+txn OnCompletion
+int DeleteApplication
+==
+bnz main_l33
+txn OnCompletion
+int UpdateApplication
+==
+bnz main_l32
+txn OnCompletion
+int OptIn
+==
+bnz main_l31
+txn OnCompletion
+int CloseOut
+==
+bnz main_l30
+txn OnCompletion
+int NoOp
+==
+bnz main_l7
+err
+main_l7:
+txn NumAppArgs
+int 1
+>=
+assert
+txna ApplicationArgs 0
+byte "deactivate"
+==
+bnz main_l29
+txna ApplicationArgs 0
+byte "change_controller"
+==
+bnz main_l28
+txna ApplicationArgs 0
+byte "add_key"
+==
+bnz main_l25
+txna ApplicationArgs 0
+byte "add_service"
+==
+bnz main_l24
+txna ApplicationArgs 0
+byte "add_delegate"
+==
+bnz main_l18
+txna ApplicationArgs 0
+byte "add_alias"
+==
+bnz main_l17
+txna ApplicationArgs 0
+byte "remove_attr"
+==
+bnz main_l15
+err
+main_l15:
+callsub sub15
+main_l16:
+int 0
+return
+main_l17:
+callsub sub14
+b main_l16
+main_l18:
+callsub sub10
+txna Accounts 1
+store 3
+txn NumAppArgs
+int 6
+==
+txn NumAppArgs
+int 7
+==
+||
+txna ApplicationArgs 1
+len
+int 1
+>=
+&&
+txna ApplicationArgs 1
+len
+int 8
+<=
+&&
+txna ApplicationArgs 2
+byte "ed"
+==
+txna ApplicationArgs 2
+byte "kz"
+==
+||
+&&
+txna ApplicationArgs 3
+len
+int 4
+<=
+&&
+txna ApplicationArgs 4
+len
+int 0
+>
+&&
+txna ApplicationArgs 5
+callsub sub2
+int 1
+>=
+&&
+txna ApplicationArgs 5
+callsub sub2
+int 3
+<=
+&&
+assert
+txn NumAppArgs
+int 7
+==
+bnz main_l23
+byte ""
+store 6
+main_l20:
+load 3
+callsub sub7
+store 4
+load 4
+byte ""
+==
+bnz main_l22
+byte "{\"id\":\""
+txna ApplicationArgs 1
+concat
+byte "\",\"t\":\"3\",\"dt\":\""
+concat
+txna ApplicationArgs 2
+concat
+byte "\",\"v\":\""
+concat
+txna ApplicationArgs 3
+concat
+byte "\",\"pk\":\""
+concat
+txna ApplicationArgs 4
+concat
+byte "\",\"p\":"
+concat
+txna ApplicationArgs 5
+concat
+byte ",\"exp\":\""
+concat
+load 6
+concat
+byte "\"}"
+concat
+store 5
+load 3
+load 4
+load 5
+app_local_put
+int 1
+return
+main_l22:
+int 0
+return
+main_l23:
+txna ApplicationArgs 6
+len
+int 8
+==
+assert
+txna ApplicationArgs 6
+store 6
+b main_l20
+main_l24:
+callsub sub13
+b main_l16
+main_l25:
+callsub sub10
+txna Accounts 1
+store 0
+txn NumAppArgs
+int 6
+==
+txna ApplicationArgs 1
+len
+int 1
+>=
+&&
+txna ApplicationArgs 1
+len
+int 8
+<=
+&&
+txna ApplicationArgs 2
+byte "ed"
+==
+txna ApplicationArgs 2
+byte "kz"
+==
+||
+&&
+txna ApplicationArgs 3
+len
+int 4
+<=
+&&
+txna ApplicationArgs 4
+len
+int 0
+>
+&&
+txna ApplicationArgs 5
+callsub sub2
+int 1
+>=
+&&
+txna ApplicationArgs 5
+callsub sub2
+int 3
+<=
+&&
+assert
+load 0
+callsub sub7
+store 1
+load 1
+byte ""
+==
+bnz main_l27
+byte "{\"id\":\""
+txna ApplicationArgs 1
+concat
+byte "\",\"t\":\"0\",\"kt\":\""
+concat
+txna ApplicationArgs 2
+concat
+byte "\",\"v\":\""
+concat
+txna ApplicationArgs 3
+concat
+byte "\",\"pk\":\""
+concat
+txna ApplicationArgs 4
+concat
+byte "\",\"p\":"
+concat
+txna ApplicationArgs 5
+concat
+byte "}"
+concat
+store 2
+load 0
+load 1
+load 2
+app_local_put
+int 1
+return
+main_l27:
+int 0
+return
+main_l28:
+callsub sub12
+b main_l16
+main_l29:
+callsub sub11
+b main_l16
+main_l30:
+int 0
+return
+main_l31:
+callsub sub5
+callsub sub6
+int 1
+return
+main_l32:
+callsub sub4
+int 1
+return
+main_l33:
+int 0
+return
+main_l34:
+callsub sub3
+int 1
+return
+sub0: // pow10
+store 8
+int 10
+load 8
+exp
+retsub
+sub1: // ascii_to_int
+store 9
+load 9
+int 48
+>=
+assert
+load 9
+int 57
+<=
+assert
+load 9
+int 48
+-
+retsub
+sub2: // atoi
+store 7
+load 7
+len
+int 0
+>
+bnz sub2_l2
+int 0
+b sub2_l3
+sub2_l2:
+load 7
+int 0
+getbyte
+callsub sub1
+load 7
+len
+int 1
+-
+callsub sub0
+*
+load 7
+int 1
+load 7
+len
+substring3
+load 7
+swap
+callsub sub2
+swap
+store 7
++
+sub2_l3:
+retsub
+sub3: // init_contract
+byte "version"
+byte "0.1.0"
+app_global_put
+byte "admin"
+global CreatorAddress
+app_global_put
+retsub
+sub4: // update_version
+txn Sender
+byte "admin"
+app_global_get
+==
+txn NumAppArgs
+int 2
+==
+&&
+assert
+byte "version"
+txna ApplicationArgs 1
+app_global_put
+retsub
+sub5: // init_status
+txn Sender
+byte "status"
+byte "{\"a\":1,\"v\":\""
+byte "version"
+app_global_get
+concat
+byte "\",\"t\":1}"
+concat
+app_local_put
+retsub
+sub6: // init_values
+txn Sender
+byte "controller"
+txn Sender
+app_local_put
+int 0
+store 10
+sub6_l1:
+load 10
+int 14
+<
+bz sub6_l3
+txn Sender
+byte "d"
+load 10
+itob
+concat
+byte ""
+app_local_put
+load 10
+int 1
++
+store 10
+b sub6_l1
+sub6_l3:
+retsub
+sub7: // get_empty_attr_slot
+store 11
+int 0
+store 12
+sub7_l1:
+load 12
+int 14
+<
+bz sub7_l5
+load 11
+byte "d"
+load 12
+itob
+concat
+app_local_get
+byte ""
+==
+bnz sub7_l4
+load 12
+int 1
++
+store 12
+b sub7_l1
+sub7_l4:
+byte "d"
+load 12
+itob
+concat
+retsub
+sub7_l5:
+byte ""
+retsub
+sub8: // get_attr_slot
+store 25
+store 24
+int 0
+store 26
+sub8_l1:
+load 26
+int 14
+<
+bz sub8_l6
+load 24
+byte "d"
+load 26
+itob
+concat
+app_local_get
+store 27
+load 27
+len
+int 7
+load 25
+len
++
+>=
+bnz sub8_l4
+sub8_l3:
+load 26
+int 1
++
+store 26
+b sub8_l1
+sub8_l4:
+load 27
+int 7
+load 25
+len
+extract3
+load 25
+==
+bz sub8_l3
+byte "d"
+load 26
+itob
+concat
+retsub
+sub8_l6:
+byte ""
+retsub
+sub9: // is_active
+store 13
+load 13
+int 5
+int 6
+substring3
+callsub sub2
+int 1
+==
+retsub
+sub10: // check_controller
+txna Accounts 1
+txn ApplicationID
+app_opted_in
+txn Sender
+txna Accounts 1
+byte "controller"
+app_local_get
+==
+&&
+txna Accounts 1
+byte "status"
+app_local_get
+callsub sub9
+int 1
+==
+&&
+assert
+retsub
+sub11: // deactivate
+callsub sub10
+txna Accounts 1
+store 14
+load 14
+byte "status"
+byte "{\"a\":0}"
+app_local_put
+int 1
+return
+sub12: // change_controller
+callsub sub10
+txna Accounts 1
+store 15
+load 15
+byte "controller"
+txna Accounts 2
+app_local_put
+int 1
+return
+sub13: // add_service
+callsub sub10
+txna Accounts 1
+store 16
+txn NumAppArgs
+int 4
+==
+txna ApplicationArgs 1
+len
+int 1
+>=
+&&
+txna ApplicationArgs 1
+len
+int 8
+<=
+&&
+txna ApplicationArgs 2
+byte "dis"
+==
+txna ApplicationArgs 2
+byte "agt"
+==
+||
+txna ApplicationArgs 2
+byte "net"
+==
+||
+txna ApplicationArgs 2
+byte "str"
+==
+||
+txna ApplicationArgs 2
+byte "vcr"
+==
+||
+&&
+txna ApplicationArgs 3
+len
+int 1
+>=
+&&
+txna ApplicationArgs 3
+len
+int 92
+<=
+&&
+assert
+load 16
+callsub sub7
+store 17
+load 17
+byte ""
+==
+bnz sub13_l2
+byte "{\"id\":\""
+txna ApplicationArgs 1
+concat
+byte "\",\"t\":\"1\",\"st\":\""
+concat
+txna ApplicationArgs 2
+concat
+byte "\",\"ep\":\""
+concat
+txna ApplicationArgs 3
+concat
+store 18
+load 16
+load 17
+load 18
+app_local_put
+int 1
+return
+sub13_l2:
+int 0
+return
+sub14: // add_alias
+callsub sub10
+txna Accounts 1
+store 19
+txn NumAppArgs
+int 4
+==
+txna ApplicationArgs 1
+len
+int 1
+>=
+&&
+txna ApplicationArgs 1
+len
+int 8
+<=
+&&
+txna ApplicationArgs 2
+byte "did"
+==
+txna ApplicationArgs 2
+byte "url"
+==
+||
+&&
+txna ApplicationArgs 3
+len
+int 1
+>=
+&&
+txna ApplicationArgs 3
+len
+int 92
+<=
+&&
+assert
+load 19
+callsub sub7
+store 20
+load 20
+byte ""
+==
+bnz sub14_l2
+byte "{\"id\":\""
+txna ApplicationArgs 1
+concat
+byte "\",\"t\":\"2\",\"at\":\""
+concat
+txna ApplicationArgs 2
+concat
+byte "\",\"aka\":\""
+concat
+txna ApplicationArgs 3
+concat
+store 21
+load 19
+load 20
+load 21
+app_local_put
+int 1
+return
+sub14_l2:
+int 0
+return
+sub15: // remove_attr
+callsub sub10
+txna Accounts 1
+store 22
+txn NumAppArgs
+int 2
+==
+txna ApplicationArgs 1
+len
+int 1
+>=
+&&
+txna ApplicationArgs 1
+len
+int 8
+<=
+&&
+assert
+load 22
+txna ApplicationArgs 1
+callsub sub8
+store 23
+load 23
+byte ""
+==
+bnz sub15_l2
+load 22
+load 23
+byte ""
+app_local_put
+int 1
+return
+sub15_l2:
+int 0
+return

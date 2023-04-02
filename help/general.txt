@@ -1,0 +1,14 @@
+
+usage:  algoid <command>
+
+    Supported commands:
+
+    > create:   Generates a new AlgoID identity and stores it in a secure wallet
+    > resolve:  Visualizes all attributes related to the specified AlgoID identity
+    > manage:   Manage your AlgoID identity by adding or removing attributes
+    > delete:   Deactivates an existing AlgoID identity and deletes the associated material
+    > vc:       Create, sign and verify Verifiable Credentials
+    > sign:     Signs binary data with the specified AlgoID identity
+    > verify:   Verifies binary data against the specified AlgoID identity
+    > help:     Prints a guide for the command given
+    

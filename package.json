@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "algosdk": "^1.22.0",
+    "bcrypt": "^5.1.0",
+    "crypto-js": "^4.1.1",
+    "did-jwt": "^6.9.0",
+    "readline-sync": "^1.4.10"
+  },
+  "name": "algodid",
+  "description": "(TEMPORARY DEVELOPEMENT DESCRIPTION): DID method for the Algorand Blockchain based on W3C DID-specification and Algoand's TEAL Stateful Contracts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FredFed/AlgoDID.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FredFed/AlgoDID/issues"
+  },
+  "homepage": "https://github.com/FredFed/AlgoDID#readme"
+}
